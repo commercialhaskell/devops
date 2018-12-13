@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "commercialhaskell-com-redirect.fullname" . }}
+  labels:
+    app: {{ include "commercialhaskell-com-redirect.name" . }}
+    chart: {{ include "commercialhaskell-com-redirect.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - name: {{ .Values.service.http.name }}
+      port: {{ .Values.service.http.externalPort }}
+      targetPort: {{ .Values.service.http.internalPort }}
+    - name: {{ .Values.service.https.name }}
+      port: {{ .Values.service.https.externalPort }}
+      targetPort: {{ .Values.service.https.internalPort }}
+  selector:
+    app: {{ include "commercialhaskell-com-redirect.name" . }}
